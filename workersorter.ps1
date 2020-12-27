@@ -1,7 +1,7 @@
 ﻿#Initializing workers and files
 $workers = 3
-$fList = (Get-ChildItem -Recurse -File).FullName
-$files = (Get-ChildItem -Recurse -File | Measure-Object).Count
+$fList = (Get-ChildItem -Recurse -File | Where-Object { $_.DirectoryName -eq (Get-Location).Path -and ($_.FullName -ne $PSCommandPath) })
+$files = $fList.Count
 #Calculating result for Workers Sets
 $result = $files / $workers
 $remainder = $files % $workers
@@ -36,17 +36,16 @@ for($i=0;$i-lt$workers;$i++)
         if($(Test-Path $path) -ne $true){New-Item -Path $path -ItemType Directory}
         for($j=0;$j-lt$set[$i];$j++)
             {
-                if($fList[$curr] -ne $PSCommandPath)
-                {
-                    Move-Item $fList[$curr].Replace("[", "``[").replace("]", "``]") $path
-                }
+                Move-Item $fList[$curr].FullName.Replace("[", "``[").replace("]", "``]") $path
                 $curr++
             }
     }
-$workers
-$files
-$fList
-$result
-$remainder
-$set
-$set[0]
+
+#for testing
+#$workers
+#$files
+#$fList
+#$result
+#$remainder
+#$set
+#$set[0]
