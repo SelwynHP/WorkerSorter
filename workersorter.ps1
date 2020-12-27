@@ -11,21 +11,15 @@ if($result -lt 1)
 [System.Windows.MessageBox]::Show('Not enough files to complete the task')
 exit
 }
-#Setting the number of files for each worker when their are equal amounts of files per worker
+#Setting the number of files for each worker
 $set = New-Object int[] $workers
-if($remainder -eq 0)
-{
-    for($i=0;$i-lt$workers;$i++)
+for($i=0;$i-lt$workers;$i++)
     {
         $set[$i] = $result
     }
-}
-else
+#Setting the number of files for each worker when their are not equal amounts of files per worker
+if($remainder -ne 0)
 {
-    for($i=0;$i-lt$workers;$i++)
-    {
-        $set[$i] = $result
-    }
     #Get decimal part of $result
     $decimal = $result - [math]::Truncate($result)
     #Depending on $decimal, we add remainder to last element of array($set) or calculate the last element
