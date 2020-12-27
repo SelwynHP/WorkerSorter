@@ -15,7 +15,7 @@ exit
 $set = New-Object int[] $workers
 if($remainder -eq 0)
 {
-for($i=0;$i-lt$workers;$i++)
+    for($i=0;$i-lt$workers;$i++)
     {
         $set[$i] = $result
     }
@@ -26,7 +26,22 @@ else
     {
         $set[$i] = $result
     }
-    $set[$($workers-1)] += $remainder
+    #Get decimal part of $result
+    $decimal = $result - [math]::Truncate($result)
+    #Depending on $decimal, we add remainder to last element of array($set) or calculate the last element
+    if($decimal -gt 0.5)
+    {
+        $totals = 0
+        for($i=0;$i-lt$set.Count-1;$i++)
+        {
+            $totals += $set[$i]
+        }
+        $set[$($workers-1)] = $files - $totals
+    }
+    else
+    {
+        $set[$($workers-1)] += $remainder
+    }
 }
 #Moving Files to appropriate worker set
 $curr = 0
