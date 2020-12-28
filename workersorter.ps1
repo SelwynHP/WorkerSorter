@@ -1,6 +1,6 @@
 ﻿#Initializing workers and files
 $workers = 3
-$fList = (Get-ChildItem -Recurse -File | Where-Object { $_.DirectoryName -eq (Get-Location).Path -and ($_.FullName -ne $PSCommandPath) })
+$fList = (Get-ChildItem -File | Where-Object { $_.FullName -ne $PSCommandPath })
 $files = $fList.Count
 #Calculating result for Workers Sets
 $result = $files / $workers
