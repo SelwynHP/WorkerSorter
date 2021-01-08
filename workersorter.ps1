@@ -1,6 +1,7 @@
 ﻿#Initializing workers and files
 $workers = 3
-$fList = (Get-ChildItem -File | Where-Object { $_.FullName -ne $PSCommandPath })
+$fList = (Get-ChildItem *.avi, *.divx, *.dvx, *.f4p, *.f4v, *.fli, *.flv,
+ *.mp4, *.mov, *.m4v, *.mpg, *.mpeg, *.wmv, *.mkv, *.xvid -File)
 $files = $fList.Count
 #Calculating result for Workers Sets
 $result = $files / $workers
